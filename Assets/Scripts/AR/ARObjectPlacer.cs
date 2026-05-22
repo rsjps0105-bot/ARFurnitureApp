@@ -8,16 +8,16 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class ARObjectPlacer : MonoBehaviour
 {
+    [SerializeField] private Camera arCamera;
     [SerializeField] private GameObject placePrefab;
+    [SerializeField] private MessageUIManager messageUIManager;
     [SerializeField] private PlaneManager planeManager;
+    [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private SelectionManager selectionManager;
     [SerializeField] private EditModeManager editModeManager;
-    [SerializeField] private Camera arCamera;
-
+    
     private ARRaycastManager raycastManager;
     private static readonly List<ARRaycastHit> hits = new();
-
-    private string message = "待機中";
 
     private void OnEnable()
     {
@@ -48,7 +48,7 @@ public class ARObjectPlacer : MonoBehaviour
         // タップ開始以外は配置しない
         if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began) return;
 
-        message = "タップされた";
+        messageUIManager.ShowMessage("タップされた");
 
         // 編集モードが配置以外なら、配置しない
         if (editModeManager.CurrentMode != EditModeManager.EditMode.Add)
@@ -57,21 +57,21 @@ public class ARObjectPlacer : MonoBehaviour
         // 選択解除したフレームなら、配置しない
         if (selectionManager != null && selectionManager.DidClearSelectionThisFrame)
         {
-            message = "選択解除したため配置しない";
+            messageUIManager.ShowMessage("選択解除したため配置しない");
             return;
         }
 
         // 選択中なら、何をタップしても配置しない
         if (selectionManager != null && selectionManager.HasSelection)
         {
-            message = "選択中のため配置しない";
+            messageUIManager.ShowMessage("選択中のため配置しない");
             return;
         }
 
         // 家具をタップしているか確認
         if (IsTouchingFurniture(touch.screenPosition))
         {
-            message = "家具を選択中";
+            messageUIManager.ShowMessage("家具を選択中");
             return;
         }
 
@@ -83,7 +83,7 @@ public class ARObjectPlacer : MonoBehaviour
     {
         if (arCamera == null)
         {
-            message = "AR Camera未設定";
+            messageUIManager.ShowMessage("AR Camera未設定");
             return false;
         }
 
@@ -114,7 +114,15 @@ public class ARObjectPlacer : MonoBehaviour
 
                 if (result == PlaneCheckResult.Ok)
                 {
-                    message = "有効な床に配置";
+                    Vector3 placePosition = hit.pose.position;
+
+                    if (!placementValidator.CanPlace(placePrefab, placePosition, hit.pose.rotation))
+                    {
+                        messageUIManager.ShowMessage("ここには配置できない");
+                        return;
+                    }
+
+                    messageUIManager.ShowMessage("有効な床に配置");
                     Instantiate(placePrefab, hit.pose.position, Quaternion.identity);
                     return;
                 }
@@ -122,37 +130,28 @@ public class ARObjectPlacer : MonoBehaviour
                 switch (result)
                 {
                     case PlaneCheckResult.TooSmall:
-                        message = "床が小さい";
+                        messageUIManager.ShowMessage("床が小さい");
                         break;
 
                     case PlaneCheckResult.DifferentHeight:
-                        message = "高さが違う";
+                        messageUIManager.ShowMessage("高さが違う");
                         break;
 
                     case PlaneCheckResult.NotHorizontal:
-                        message = "床ではない";
+                        messageUIManager.ShowMessage("床ではない");
                         break;
 
                     default:
-                        message = "配置できない";
+                        messageUIManager.ShowMessage("配置できない");
                         break;
                 }
             }
 
-            message = "置ける床が見つからない";
+            messageUIManager.ShowMessage("置ける床が見つからない");
         }
         else
         {
-            message = "床に当たってない";
+            messageUIManager.ShowMessage("床に当たってない");
         }
-    }
-
-    private void OnGUI()
-    {
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 50;
-        style.normal.textColor = Color.red;
-
-        GUI.Label(new Rect(50, 50, 1000, 100), message, style);
     }
 }
