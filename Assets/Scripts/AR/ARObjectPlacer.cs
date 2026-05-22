@@ -11,6 +11,7 @@ public class ARObjectPlacer : MonoBehaviour
     [SerializeField] private GameObject placePrefab;
     [SerializeField] private PlaneManager planeManager;
     [SerializeField] private SelectionManager selectionManager;
+    [SerializeField] private EditModeManager editModeManager;
     [SerializeField] private Camera arCamera;
 
     private ARRaycastManager raycastManager;
@@ -35,35 +36,46 @@ public class ARObjectPlacer : MonoBehaviour
 
     private void Update()
     {
+        // タッチがない場合は配置しない
         if (Touch.activeTouches.Count == 0) return;
 
         Touch touch = Touch.activeTouches[0];
 
+        // UIをタップしている場合は配置しない
+        if (UIInputBlocker.IsPointerOverUI(touch))
+            return;
+
+        // タップ開始以外は配置しない
         if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began) return;
 
         message = "タップされた";
 
+        // 編集モードが配置以外なら、配置しない
+        if (editModeManager.CurrentMode != EditModeManager.EditMode.Add)
+            return;
+
+        // 選択解除したフレームなら、配置しない
         if (selectionManager != null && selectionManager.DidClearSelectionThisFrame)
         {
             message = "選択解除したため配置しない";
             return;
         }
 
-        // ① 選択中なら、何をタップしても配置しない
+        // 選択中なら、何をタップしても配置しない
         if (selectionManager != null && selectionManager.HasSelection)
         {
             message = "選択中のため配置しない";
             return;
         }
 
-        // ② 家具をタップしているか確認
+        // 家具をタップしているか確認
         if (IsTouchingFurniture(touch.screenPosition))
         {
             message = "家具を選択中";
             return;
         }
 
-        // ③ 床に配置
+        // 床に配置
         TryPlaceObject(touch.screenPosition);
     }
 

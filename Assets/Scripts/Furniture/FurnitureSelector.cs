@@ -25,6 +25,10 @@ public class FurnitureSelector : MonoBehaviour
 
         Touch touch = Touch.activeTouches[0];
 
+        // UIをタップしている場合は選択しない
+        if (UIInputBlocker.IsPointerOverUI(touch))
+            return;
+
         if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began)
             return;
 
