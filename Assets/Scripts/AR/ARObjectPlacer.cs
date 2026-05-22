@@ -9,14 +9,14 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 public class ARObjectPlacer : MonoBehaviour
 {
     [SerializeField] private Camera arCamera;
+    [SerializeField] private ARRaycastManager raycastManager;
     [SerializeField] private GameObject placePrefab;
-    [SerializeField] private MessageUIManager messageUIManager;
     [SerializeField] private PlaneManager planeManager;
-    [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private SelectionManager selectionManager;
     [SerializeField] private EditModeManager editModeManager;
-    
-    private ARRaycastManager raycastManager;
+    [SerializeField] private PlacementValidator placementValidator;
+    [SerializeField] private MessageUIManager messageUIManager;
+
     private static readonly List<ARRaycastHit> hits = new();
 
     private void OnEnable()
@@ -27,11 +27,6 @@ public class ARObjectPlacer : MonoBehaviour
     private void OnDisable()
     {
         EnhancedTouchSupport.Disable();
-    }
-
-    private void Awake()
-    {
-        raycastManager = GetComponent<ARRaycastManager>();
     }
 
     private void Update()

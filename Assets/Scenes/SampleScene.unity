@@ -2905,6 +2905,76 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &1960963780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1960963783}
+  - component: {fileID: 1960963782}
+  - component: {fileID: 1960963781}
+  m_Layer: 0
+  m_Name: ARManagers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1960963781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960963780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7968d5fe7f773aa468d132d26c3ffece, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARObjectMover
+  raycastManager: {fileID: 1974879173}
+  selectionManager: {fileID: 570210391}
+  editModeManager: {fileID: 2145983764}
+  placementValidator: {fileID: 1574836644}
+  messageUIManager: {fileID: 782628376}
+--- !u!114 &1960963782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960963780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c74ce6b98fbffd48878666aace2b8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARObjectPlacer
+  arCamera: {fileID: 1792641443}
+  raycastManager: {fileID: 1974879173}
+  placePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
+  planeManager: {fileID: 1542650172}
+  selectionManager: {fileID: 570210391}
+  editModeManager: {fileID: 2145983764}
+  placementValidator: {fileID: 1574836644}
+  messageUIManager: {fileID: 782628376}
+--- !u!4 &1960963783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960963780}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0.35, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1961168236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2981,7 +3051,6 @@ GameObject:
   - component: {fileID: 1974879175}
   - component: {fileID: 1974879174}
   - component: {fileID: 1974879173}
-  - component: {fileID: 1974879177}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -3056,25 +3125,6 @@ Transform:
   - {fileID: 1542650171}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1974879177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974879172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c74ce6b98fbffd48878666aace2b8f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ARObjectPlacer
-  arCamera: {fileID: 1792641443}
-  placePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
-  messageUIManager: {fileID: 782628376}
-  planeManager: {fileID: 1542650172}
-  placementValidator: {fileID: 1574836644}
-  selectionManager: {fileID: 570210391}
-  editModeManager: {fileID: 2145983764}
 --- !u!1 &2082547335
 GameObject:
   m_ObjectHideFlags: 0
@@ -3356,7 +3406,7 @@ GameObject:
   - component: {fileID: 2145983763}
   - component: {fileID: 2145983764}
   m_Layer: 0
-  m_Name: UIManager
+  m_Name: EditModeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3398,6 +3448,7 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 480066022}
   - {fileID: 1974879176}
+  - {fileID: 1960963783}
   - {fileID: 1730837070}
   - {fileID: 570210392}
   - {fileID: 574989077}
