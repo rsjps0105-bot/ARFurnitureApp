@@ -9,11 +9,12 @@ public class EditModeManager : MonoBehaviour
         Add,
         Move,
         Rotate,
-        Scale,
-        Delete
+        Scale
     }
 
     public EditMode CurrentMode { get; private set; } = EditMode.None;
+
+    [SerializeField] private SelectionManager selectionManager;
 
     [SerializeField] private TextMeshProUGUI modeText;
 
@@ -42,11 +43,6 @@ public class EditModeManager : MonoBehaviour
         SetMode(EditMode.Scale);
     }
 
-    public void SetDeleteMode()
-    {
-        SetMode(EditMode.Delete);
-    }
-
     public void SetNoneMode()
     {
         SetMode(EditMode.None);
@@ -62,5 +58,22 @@ public class EditModeManager : MonoBehaviour
         }
 
         Debug.Log("Mode : " + mode);
+    }
+
+    public void DeleteSelected()
+    {
+        FurnitureObject selected = selectionManager.SelectedFurniture;
+
+        if (selected == null)
+        {
+            modeText.text = "No object selected";
+            return;
+        }
+
+        Destroy(selected.gameObject);
+
+        selectionManager.ClearSelection();
+
+        modeText.text = "Deleted";
     }
 }
