@@ -48,7 +48,7 @@ public class EditModeManager : MonoBehaviour
         SetMode(EditMode.None);
     }
 
-    private void SetMode(EditMode mode)
+    public void SetMode(EditMode mode)
     {
         CurrentMode = mode;
 

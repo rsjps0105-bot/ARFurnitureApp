@@ -74,6 +74,15 @@ public class ARObjectPlacer : MonoBehaviour
         TryPlaceObject(touch.screenPosition);
     }
 
+    public void SetPlacePrefab(GameObject prefab)
+    {
+        placePrefab = prefab;
+
+        editModeManager.SetMode(EditModeManager.EditMode.Add);
+
+        messageUIManager.ShowMessage("”z’u‚·‚éCube‚ð‘I‘ð‚µ‚Ü‚µ‚½");
+    }
+
     private bool IsTouchingFurniture(Vector2 screenPosition)
     {
         if (arCamera == null)
