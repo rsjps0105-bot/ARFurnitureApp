@@ -17,6 +17,8 @@ public class ARObjectMover : MonoBehaviour
 
     private static readonly List<ARRaycastHit> hits = new();
 
+    private Vector3 grabOffset;
+
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
 
@@ -41,9 +43,9 @@ public class ARObjectMover : MonoBehaviour
 
         Touch touch = Touch.activeTouches[0];
 
-        if (touch.phase == TouchPhase.Began) // タップ開始
+        if (touch.phase == TouchPhase.Began)
         {
-            StartMove();
+            StartMove(touch.screenPosition);
         }
         else if (touch.phase == TouchPhase.Moved || // タップ移動中
                  touch.phase == TouchPhase.Stationary) // タップしているが指が動いていない場合も含む
@@ -57,13 +59,24 @@ public class ARObjectMover : MonoBehaviour
         }
     }
 
-    private void StartMove()
+    private void StartMove(Vector2 screenPosition)
     {
         GameObject selected = selectionManager.SelectedFurniture.gameObject;
 
-        // 現在の位置と回転を保存
         lastValidPosition = selected.transform.position;
         lastValidRotation = selected.transform.rotation;
+
+        if (raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
+        {
+            Pose hitPose = hits[0].pose;
+
+            // タップした床位置から見た家具中心までのズレを保存
+            grabOffset = selected.transform.position - hitPose.position;
+        }
+        else
+        {
+            grabOffset = Vector3.zero;
+        }
 
         isDragging = true;
         currentPositionValid = true;
@@ -87,7 +100,7 @@ public class ARObjectMover : MonoBehaviour
         Pose hitPose = hits[0].pose;
 
         // 指の位置に対応する床の場所へ家具を移動
-        selected.transform.position = hitPose.position;
+        selected.transform.position = hitPose.position + grabOffset;
 
         bool canPlace = placementValidator.CanPlace(
             selected,

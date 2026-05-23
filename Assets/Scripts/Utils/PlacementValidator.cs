@@ -17,6 +17,7 @@ public class PlacementValidator : MonoBehaviour
         Vector3 center = position + rotation * box.center;
         Vector3 halfExtents = Vector3.Scale(box.size, prefab.transform.lossyScale) * 0.5f;
 
+        // 指定した範囲内のコライダーを取得
         Collider[] hits = Physics.OverlapBox(center, halfExtents, rotation);
 
         foreach (Collider hit in hits)
