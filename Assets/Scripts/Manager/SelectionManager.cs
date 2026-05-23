@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
-    public FurnitureObject SelectedFurniture { get; private set; }
+    public Furniture SelectedFurniture { get; private set; }
 
     public bool HasSelection => SelectedFurniture != null;
 
     public bool DidClearSelectionThisFrame { get; private set; }
 
-    public void Select(FurnitureObject furniture)
+    public void Select(Furniture furniture)
     {
         DidClearSelectionThisFrame = false;
 

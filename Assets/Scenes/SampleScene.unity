@@ -2916,6 +2916,8 @@ GameObject:
   - component: {fileID: 1960963783}
   - component: {fileID: 1960963782}
   - component: {fileID: 1960963781}
+  - component: {fileID: 1960963785}
+  - component: {fileID: 1960963784}
   m_Layer: 0
   m_Name: ARManagers
   m_TagString: Untagged
@@ -2954,7 +2956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ARObjectPlacer
   arCamera: {fileID: 1792641443}
   raycastManager: {fileID: 1974879173}
-  placePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
+  placePrefab: {fileID: 4299425956542973980, guid: 306030b8ec6a82f4a9a4993eaadf4495, type: 3}
   planeManager: {fileID: 1542650172}
   selectionManager: {fileID: 570210391}
   editModeManager: {fileID: 2145983764}
@@ -2975,6 +2977,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1960963784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960963780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f55407642533f54695f18f54b1d5284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARObjectScaler
+  selectionManager: {fileID: 570210391}
+  editModeManager: {fileID: 2145983764}
+  placementValidator: {fileID: 1574836644}
+  messageUIManager: {fileID: 782628376}
+  scaleSpeed: 0.001
+  minScale: 0.1
+  maxScale: 1
+--- !u!114 &1960963785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960963780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8207c4b844761154eb814f8966e61912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ARObjectRotator
+  selectionManager: {fileID: 570210391}
+  editModeManager: {fileID: 2145983764}
+  placementValidator: {fileID: 1574836644}
+  messageUIManager: {fileID: 782628376}
+  rotationSpeed: 0.2
 --- !u!1 &1961168236
 GameObject:
   m_ObjectHideFlags: 0

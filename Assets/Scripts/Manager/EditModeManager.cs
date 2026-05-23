@@ -62,7 +62,7 @@ public class EditModeManager : MonoBehaviour
 
     public void DeleteSelected()
     {
-        FurnitureObject selected = selectionManager.SelectedFurniture;
+        Furniture selected = selectionManager.SelectedFurniture;
 
         if (selected == null)
         {

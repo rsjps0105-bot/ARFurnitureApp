@@ -4,7 +4,7 @@ public class PlacementValidator : MonoBehaviour
 {
     [SerializeField] private MessageUIManager messageUIManager;
 
-    public bool CanPlace(GameObject prefab, Vector3 position, Quaternion rotation, FurnitureObject ignore = null)
+    public bool CanPlace(GameObject prefab, Vector3 position, Quaternion rotation, Furniture ignore = null)
     {
         BoxCollider box = prefab.GetComponentInChildren<BoxCollider>();
 
@@ -21,7 +21,7 @@ public class PlacementValidator : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            FurnitureObject furniture = hit.GetComponentInParent<FurnitureObject>();
+            Furniture furniture = hit.GetComponentInParent<Furniture>();
 
             if (furniture != null && furniture != ignore)
             {

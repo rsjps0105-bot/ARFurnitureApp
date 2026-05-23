@@ -86,7 +86,7 @@ public class ARObjectPlacer : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            FurnitureObject furniture = hit.collider.GetComponentInParent<FurnitureObject>();
+            Furniture furniture = hit.collider.GetComponentInParent<Furniture>();
 
             if (furniture != null)
             {

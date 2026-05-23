@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FurnitureObject : MonoBehaviour
+public class Furniture : MonoBehaviour
 {
     [SerializeField] private Renderer targetRenderer;
 
@@ -11,7 +11,7 @@ public class FurnitureObject : MonoBehaviour
     {
         if (targetRenderer == null)
         {
-            targetRenderer = GetComponent<Renderer>();
+            targetRenderer = GetComponentInChildren<Renderer>();
         }
 
         defaultColor = targetRenderer.material.color;
