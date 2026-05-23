@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6504306128360359281}
   - component: {fileID: 7747268382073332245}
   m_Layer: 0
-  m_Name: FurnitureRoot G
+  m_Name: GreenCube
   m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
