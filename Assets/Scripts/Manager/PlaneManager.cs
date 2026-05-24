@@ -8,7 +8,8 @@ public enum PlaneCheckResult
     Null,
     NotHorizontal,
     TooSmall,
-    DifferentHeight
+    DifferentHeight,
+    NotConfirmedFloor
 }
 
 public class PlaneManager : MonoBehaviour
@@ -18,6 +19,8 @@ public class PlaneManager : MonoBehaviour
 
     private bool hasBaseFloor = false;
     private float baseFloorY;
+
+    public bool IsFloorConfirmed => hasBaseFloor;
 
     public PlaneCheckResult CheckPlane(ARPlane plane, Pose hitPose)
     {
@@ -34,15 +37,30 @@ public class PlaneManager : MonoBehaviour
 
         if (!hasBaseFloor)
         {
-            baseFloorY = hitY;
-            hasBaseFloor = true;
-            return PlaneCheckResult.Ok;
+            return PlaneCheckResult.NotConfirmedFloor;
         }
 
         float diff = Mathf.Abs(hitY - baseFloorY);
 
         if (diff > allowedHeightDifference)
             return PlaneCheckResult.DifferentHeight;
+
+        return PlaneCheckResult.Ok;
+    }
+
+    public PlaneCheckResult ConfirmFloor(ARPlane plane, Pose hitPose)
+    {
+        if (plane == null)
+            return PlaneCheckResult.Null;
+
+        if (plane.alignment != PlaneAlignment.HorizontalUp)
+            return PlaneCheckResult.NotHorizontal;
+
+        if (plane.size.x < minPlaneSize || plane.size.y < minPlaneSize)
+            return PlaneCheckResult.TooSmall;
+
+        baseFloorY = hitPose.position.y;
+        hasBaseFloor = true;
 
         return PlaneCheckResult.Ok;
     }

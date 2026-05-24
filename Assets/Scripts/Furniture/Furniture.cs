@@ -2,28 +2,31 @@ using UnityEngine;
 
 public class Furniture : MonoBehaviour
 {
-    [SerializeField] private Renderer targetRenderer;
-
-    private Color defaultColor;
-    private Color selectedColor = Color.green;
+    private Outline outline;
 
     private void Awake()
     {
-        if (targetRenderer == null)
-        {
-            targetRenderer = GetComponentInChildren<Renderer>();
-        }
+        outline = GetComponent<Outline>();
 
-        defaultColor = targetRenderer.material.color;
+        if (outline != null)
+        {
+            outline.enabled = false;
+        }
     }
 
     public void Select()
     {
-        targetRenderer.material.color = selectedColor;
+        if (outline != null)
+        {
+            outline.enabled = true;
+        }
     }
 
     public void Deselect()
     {
-        targetRenderer.material.color = defaultColor;
+        if (outline != null)
+        {
+            outline.enabled = false;
+        }
     }
 }
