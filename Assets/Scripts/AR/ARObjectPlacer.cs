@@ -31,46 +31,43 @@ public class ARObjectPlacer : MonoBehaviour
 
     private void Update()
     {
-        // タッチがない場合は配置しない
         if (Touch.activeTouches.Count == 0) return;
 
         Touch touch = Touch.activeTouches[0];
 
-        // UIをタップしている場合は配置しない
         if (UIInputBlocker.IsPointerOverUI(touch))
             return;
 
-        // タップ開始以外は配置しない
-        if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began) return;
+        if (touch.phase != UnityEngine.InputSystem.TouchPhase.Began)
+            return;
 
-        messageUIManager.ShowMessage("タップされた");
-
-        // 編集モードが配置以外なら、配置しない
         if (editModeManager.CurrentMode != EditModeManager.EditMode.Add)
             return;
 
-        // 選択解除したフレームなら、配置しない
+        if (planeManager != null && !planeManager.IsFloorConfirmed)
+        {
+            messageUIManager.ShowMessage("先に床を検出してください");
+            return;
+        }
+
         if (selectionManager != null && selectionManager.DidClearSelectionThisFrame)
         {
             messageUIManager.ShowMessage("選択解除したため配置しない");
             return;
         }
 
-        // 選択中なら、何をタップしても配置しない
         if (selectionManager != null && selectionManager.HasSelection)
         {
             messageUIManager.ShowMessage("選択中のため配置しない");
             return;
         }
 
-        // 家具をタップしているか確認
         if (IsTouchingFurniture(touch.screenPosition))
         {
             messageUIManager.ShowMessage("家具を選択中");
             return;
         }
 
-        // 床に配置
         TryPlaceObject(touch.screenPosition);
     }
 
@@ -80,7 +77,14 @@ public class ARObjectPlacer : MonoBehaviour
 
         editModeManager.SetMode(EditModeManager.EditMode.Add);
 
-        messageUIManager.ShowMessage("配置するCubeを選択しました");
+        if (planeManager != null && !planeManager.IsFloorConfirmed)
+        {
+            messageUIManager.ShowMessage("床を検出してから配置できます");
+        }
+        else
+        {
+            messageUIManager.ShowMessage("配置する家具を選択しました");
+        }
     }
 
     private bool IsTouchingFurniture(Vector2 screenPosition)
@@ -108,54 +112,41 @@ public class ARObjectPlacer : MonoBehaviour
 
     private void TryPlaceObject(Vector2 screenPosition)
     {
-        if (raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
+        if (placePrefab == null)
         {
-            foreach (ARRaycastHit hit in hits)
+            messageUIManager.ShowMessage("配置する家具が選択されていません");
+            return;
+        }
+
+        if (!raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
+        {
+            messageUIManager.ShowMessage("床に当たっていません");
+            return;
+        }
+
+        foreach (ARRaycastHit hit in hits)
+        {
+            ARPlane plane = hit.trackable as ARPlane;
+
+            PlaneCheckResult result = planeManager.CheckPlane(plane, hit.pose);
+
+            if (result != PlaneCheckResult.Ok)
+                continue;
+
+            Vector3 placePosition = hit.pose.position;
+            Quaternion placeRotation = Quaternion.identity;
+
+            if (!placementValidator.CanPlace(placePrefab, placePosition, placeRotation))
             {
-                ARPlane plane = hit.trackable as ARPlane;
-
-                PlaneCheckResult result = planeManager.CheckPlane(plane, hit.pose);
-
-                if (result == PlaneCheckResult.Ok)
-                {
-                    Vector3 placePosition = hit.pose.position;
-
-                    if (!placementValidator.CanPlace(placePrefab, placePosition, hit.pose.rotation))
-                    {
-                        messageUIManager.ShowMessage("ここには配置できない");
-                        return;
-                    }
-
-                    messageUIManager.ShowMessage("有効な床に配置");
-                    Instantiate(placePrefab, hit.pose.position, Quaternion.identity);
-                    return;
-                }
-
-                switch (result)
-                {
-                    case PlaneCheckResult.TooSmall:
-                        messageUIManager.ShowMessage("床が小さい");
-                        break;
-
-                    case PlaneCheckResult.DifferentHeight:
-                        messageUIManager.ShowMessage("高さが違う");
-                        break;
-
-                    case PlaneCheckResult.NotHorizontal:
-                        messageUIManager.ShowMessage("床ではない");
-                        break;
-
-                    default:
-                        messageUIManager.ShowMessage("配置できない");
-                        break;
-                }
+                messageUIManager.ShowMessage("ここには配置できません");
+                return;
             }
 
-            messageUIManager.ShowMessage("置ける床が見つからない");
+            Instantiate(placePrefab, placePosition, placeRotation);
+            messageUIManager.ShowMessage("家具を配置しました");
+            return;
         }
-        else
-        {
-            messageUIManager.ShowMessage("床に当たってない");
-        }
+
+        messageUIManager.ShowMessage("置ける床が見つかりません");
     }
 }
