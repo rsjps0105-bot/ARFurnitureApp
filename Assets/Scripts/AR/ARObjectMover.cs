@@ -14,10 +14,14 @@ public class ARObjectMover : MonoBehaviour
     [SerializeField] private EditModeManager editModeManager;
     [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private MessageUIManager messageUIManager;
+    [SerializeField] private UndoManager undoManager;
 
     private static readonly List<ARRaycastHit> hits = new();
 
     private Vector3 grabOffset;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
 
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
@@ -47,8 +51,8 @@ public class ARObjectMover : MonoBehaviour
         {
             StartMove(touch.screenPosition);
         }
-        else if (touch.phase == TouchPhase.Moved || // タップ移動中
-                 touch.phase == TouchPhase.Stationary) // タップしているが指が動いていない場合も含む
+        else if (touch.phase == TouchPhase.Moved ||
+                 touch.phase == TouchPhase.Stationary)
         {
             Move(touch.screenPosition);
         }
@@ -63,14 +67,15 @@ public class ARObjectMover : MonoBehaviour
     {
         GameObject selected = selectionManager.SelectedFurniture.gameObject;
 
+        startPosition = selected.transform.position;
+        startRotation = selected.transform.rotation;
+
         lastValidPosition = selected.transform.position;
         lastValidRotation = selected.transform.rotation;
 
         if (raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = hits[0].pose;
-
-            // タップした床位置から見た家具中心までのズレを保存
             grabOffset = selected.transform.position - hitPose.position;
         }
         else
@@ -90,16 +95,12 @@ public class ARObjectMover : MonoBehaviour
 
         GameObject selected = selectionManager.SelectedFurniture.gameObject;
 
-        // タップ位置からAR平面へのRaycastを行う
         if (!raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
         {
             return;
         }
 
-        // 最も近い床上の位置を取得
         Pose hitPose = hits[0].pose;
-
-        // 指の位置に対応する床の場所へ家具を移動
         selected.transform.position = hitPose.position + grabOffset;
 
         bool canPlace = placementValidator.CanPlace(
@@ -120,7 +121,6 @@ public class ARObjectMover : MonoBehaviour
         else
         {
             currentPositionValid = false;
-
             messageUIManager.ShowMessage("他の家具と重なっています");
         }
     }
@@ -140,6 +140,18 @@ public class ARObjectMover : MonoBehaviour
         }
         else
         {
+            Vector3 undoPosition = startPosition;
+            Quaternion undoRotation = startRotation;
+
+            undoManager.RegisterUndo(() =>
+            {
+                if (selected != null)
+                {
+                    selected.transform.position = undoPosition;
+                    selected.transform.rotation = undoRotation;
+                }
+            });
+
             messageUIManager.ShowMessage("移動しました");
         }
 

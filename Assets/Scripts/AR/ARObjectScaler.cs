@@ -10,10 +10,15 @@ public class ARObjectScaler : MonoBehaviour
     [SerializeField] private EditModeManager editModeManager;
     [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private MessageUIManager messageUIManager;
+    [SerializeField] private UndoManager undoManager;
 
     [SerializeField] private float scaleSpeed = 0.002f;
     [SerializeField] private float minScale = 0.1f;
     [SerializeField] private float maxScale = 1.0f;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+    private Vector3 startScale;
 
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
@@ -23,6 +28,16 @@ public class ARObjectScaler : MonoBehaviour
 
     private bool isScaling = false;
     private bool currentScaleValid = true;
+
+    private void OnEnable()
+    {
+        EnhancedTouchSupport.Enable();
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouchSupport.Disable();
+    }
 
     private void Update()
     {
@@ -58,6 +73,10 @@ public class ARObjectScaler : MonoBehaviour
     private void StartScale(float currentDistance)
     {
         GameObject selected = selectionManager.SelectedFurniture.gameObject;
+
+        startPosition = selected.transform.position;
+        startRotation = selected.transform.rotation;
+        startScale = selected.transform.localScale;
 
         lastValidPosition = selected.transform.position;
         lastValidRotation = selected.transform.rotation;
@@ -126,6 +145,20 @@ public class ARObjectScaler : MonoBehaviour
         }
         else
         {
+            Vector3 undoPosition = startPosition;
+            Quaternion undoRotation = startRotation;
+            Vector3 undoScale = startScale;
+
+            undoManager.RegisterUndo(() =>
+            {
+                if (selected != null)
+                {
+                    selected.transform.position = undoPosition;
+                    selected.transform.rotation = undoRotation;
+                    selected.transform.localScale = undoScale;
+                }
+            });
+
             messageUIManager.ShowMessage("‘å‚«‚³‚ğ•ÏX‚µ‚Ü‚µ‚½");
         }
 

@@ -124,8 +124,6 @@ public class PlaneManager : MonoBehaviour
 
         if (arSession != null)
             arSession.Reset();
-
-        ShowMessage("床検出をリセットしました。床を映してタップしてください");
     }
 
     private void ShowAllPlanes()

@@ -10,14 +10,28 @@ public class ARObjectRotator : MonoBehaviour
     [SerializeField] private EditModeManager editModeManager;
     [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private MessageUIManager messageUIManager;
+    [SerializeField] private UndoManager undoManager;
 
     [SerializeField] private float rotationSpeed = 0.2f;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
 
     private Vector3 lastValidPosition;
     private Quaternion lastValidRotation;
 
     private bool isRotating = false;
     private bool currentRotationValid = true;
+
+    private void OnEnable()
+    {
+        EnhancedTouchSupport.Enable();
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouchSupport.Disable();
+    }
 
     private void Update()
     {
@@ -45,6 +59,9 @@ public class ARObjectRotator : MonoBehaviour
     private void StartRotate()
     {
         GameObject selected = selectionManager.SelectedFurniture.gameObject;
+
+        startPosition = selected.transform.position;
+        startRotation = selected.transform.rotation;
 
         lastValidPosition = selected.transform.position;
         lastValidRotation = selected.transform.rotation;
@@ -105,6 +122,18 @@ public class ARObjectRotator : MonoBehaviour
         }
         else
         {
+            Vector3 undoPosition = startPosition;
+            Quaternion undoRotation = startRotation;
+
+            undoManager.RegisterUndo(() =>
+            {
+                if (selected != null)
+                {
+                    selected.transform.position = undoPosition;
+                    selected.transform.rotation = undoRotation;
+                }
+            });
+
             messageUIManager.ShowMessage("‰ñ“]‚µ‚Ü‚µ‚½");
         }
 

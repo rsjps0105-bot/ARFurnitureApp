@@ -16,6 +16,8 @@ public class ARObjectPlacer : MonoBehaviour
     [SerializeField] private EditModeManager editModeManager;
     [SerializeField] private PlacementValidator placementValidator;
     [SerializeField] private MessageUIManager messageUIManager;
+    [SerializeField] private UndoManager undoManager;
+    [SerializeField] private Transform furnitureRoot;
 
     private static readonly List<ARRaycastHit> hits = new();
 
@@ -142,7 +144,13 @@ public class ARObjectPlacer : MonoBehaviour
                 return;
             }
 
-            Instantiate(placePrefab, placePosition, placeRotation);
+            GameObject placedObject =
+                Instantiate(
+                    placePrefab,
+                    placePosition,
+                    placeRotation,
+                    furnitureRoot
+                );
             messageUIManager.ShowMessage("‰Æ‹ï‚ð”z’u‚µ‚Ü‚µ‚½");
             return;
         }

@@ -893,6 +893,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245242299}
   m_CullTransparentMesh: 1
+--- !u!1 &248678284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 248678286}
+  - component: {fileID: 248678285}
+  m_Layer: 0
+  m_Name: ResetManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &248678285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248678284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066a66762e27b82478668ea05d8061c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResetManager
+  planeManager: {fileID: 1542650172}
+  furnitureRoot: {fileID: 306437328}
+  messageUIManager: {fileID: 782628376}
+--- !u!4 &248678286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248678284}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.67434, y: -0, z: 0.50706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &250193622
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +953,7 @@ GameObject:
   - component: {fileID: 250193625}
   - component: {fileID: 250193624}
   m_Layer: 5
-  m_Name: CancelButton
+  m_Name: UndoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,9 +1023,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIButtonTester, Assembly-CSharp
-        m_MethodName: OnCancel
+      - m_Target: {fileID: 559736429}
+        m_TargetAssemblyTypeName: UndoManager, Assembly-CSharp
+        m_MethodName: Undo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1308,6 +1355,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!1 &306437327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 306437328}
+  m_Layer: 0
+  m_Name: FurnitureRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &306437328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306437327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.67434, y: -0, z: 0.50706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &311944676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1867,10 +1945,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add
+  m_text: "\u8FFD\u52A0"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
+  m_sharedMaterial: {fileID: -2767684346262878466, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2459,6 +2537,50 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &559736428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 559736430}
+  - component: {fileID: 559736429}
+  m_Layer: 0
+  m_Name: UndoManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &559736429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559736428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29acd7dcd2798324f9f52f9599dc7d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UndoManager
+--- !u!4 &559736430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559736428}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.55225, y: 0.33715, z: 0.11817}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &561122820
 GameObject:
   m_ObjectHideFlags: 0
@@ -5151,10 +5273,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reset
+  m_text: "\u30EA\u30BB\u30C3\u30C8"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
+  m_sharedMaterial: {fileID: -2767684346262878466, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5738,10 +5860,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Delete
+  m_text: "\u524A\u9664"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
+  m_sharedMaterial: {fileID: -2767684346262878466, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8510,6 +8632,7 @@ MonoBehaviour:
   editModeManager: {fileID: 2145983764}
   placementValidator: {fileID: 1574836644}
   messageUIManager: {fileID: 782628376}
+  undoManager: {fileID: 559736429}
 --- !u!114 &1960963782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8530,6 +8653,8 @@ MonoBehaviour:
   editModeManager: {fileID: 2145983764}
   placementValidator: {fileID: 1574836644}
   messageUIManager: {fileID: 782628376}
+  undoManager: {fileID: 559736429}
+  furnitureRoot: {fileID: 306437328}
 --- !u!4 &1960963783
 Transform:
   m_ObjectHideFlags: 0
@@ -8561,6 +8686,7 @@ MonoBehaviour:
   editModeManager: {fileID: 2145983764}
   placementValidator: {fileID: 1574836644}
   messageUIManager: {fileID: 782628376}
+  undoManager: {fileID: 559736429}
   scaleSpeed: 0.001
   minScale: 0.1
   maxScale: 1
@@ -8580,6 +8706,7 @@ MonoBehaviour:
   editModeManager: {fileID: 2145983764}
   placementValidator: {fileID: 1574836644}
   messageUIManager: {fileID: 782628376}
+  undoManager: {fileID: 559736429}
   rotationSpeed: 0.2
 --- !u!1 &1961168236
 GameObject:
@@ -9241,7 +9368,7 @@ GameObject:
   - component: {fileID: 2082547338}
   - component: {fileID: 2082547337}
   m_Layer: 5
-  m_Name: ApplyButton
+  m_Name: ResetButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9311,9 +9438,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1542650172}
-        m_TargetAssemblyTypeName: PlaneManager, Assembly-CSharp
-        m_MethodName: ResetBaseFloor
+      - m_Target: {fileID: 248678285}
+        m_TargetAssemblyTypeName: ResetManager, Assembly-CSharp
+        m_MethodName: ResetAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9739,10 +9866,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancel
+  m_text: "\u623B\u308B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
+  m_sharedMaterial: {fileID: -2767684346262878466, guid: 4dbb5576e357d474bb7bbd599a3b31ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9909,13 +10036,16 @@ SceneRoots:
   - {fileID: 480066022}
   - {fileID: 1974879176}
   - {fileID: 2091849102}
+  - {fileID: 574989077}
+  - {fileID: 1405987848}
   - {fileID: 1960963783}
   - {fileID: 1730837070}
   - {fileID: 570210392}
-  - {fileID: 574989077}
-  - {fileID: 1405987848}
   - {fileID: 782628377}
   - {fileID: 2145983763}
   - {fileID: 1574836645}
   - {fileID: 1837212123}
   - {fileID: 843570416}
+  - {fileID: 248678286}
+  - {fileID: 559736430}
+  - {fileID: 306437328}
