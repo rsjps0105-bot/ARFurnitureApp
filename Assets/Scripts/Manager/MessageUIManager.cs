@@ -1,21 +1,39 @@
+using TMPro;
 using UnityEngine;
 
 public class MessageUIManager : MonoBehaviour
 {
-    private string message = "Ready";
+    [SerializeField] private GameObject messagePanel;
+    [SerializeField] private TextMeshProUGUI messageText;
 
-    public void ShowMessage(string newMessage)
+    private float timer;
+    private bool isShowing;
+
+    private void Update()
     {
-        message = newMessage;
+        if (!isShowing) return;
+
+        timer -= Time.deltaTime;
+
+        if (timer <= 0f)
+        {
+            HideMessage();
+        }
     }
 
-    private void OnGUI()
+    public void ShowMessage(string message, float duration = 2f)
     {
-        GUIStyle style = new GUIStyle();
+        messagePanel.SetActive(true);
 
-        style.fontSize = 50;
-        style.normal.textColor = Color.red;
+        messageText.text = message;
 
-        GUI.Label(new Rect(50, 50, 1000, 100), message, style);
+        timer = duration;
+        isShowing = true;
+    }
+
+    private void HideMessage()
+    {
+        messagePanel.SetActive(false);
+        isShowing = false;
     }
 }
