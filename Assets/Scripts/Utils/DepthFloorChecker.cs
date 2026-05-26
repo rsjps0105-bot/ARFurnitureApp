@@ -19,14 +19,17 @@ public class DepthFloorChecker : MonoBehaviour
             return true;
         }
 
+        // Depth画像を取得
         if (!occlusionManager.TryAcquireEnvironmentDepthCpuImage(out XRCpuImage image))
         {
             Debug.LogWarning("Depth画像を取得できませんでした");
             return true;
         }
 
+        // Depth画像を使用後は必ずDisposeする必要がある(重い)ため、usingブロックで囲む
         using (image)
         {
+            // 画面座標をDepth画像の座標に変換
             Vector2 imagePoint = ScreenToDepthImagePoint(image, screenPoint);
 
             int centerX = Mathf.RoundToInt(imagePoint.x);
@@ -36,6 +39,7 @@ public class DepthFloorChecker : MonoBehaviour
             float maxDepth = float.MinValue;
             int validCount = 0;
 
+            // 周辺Depthをサンプリングして、最大と最小の深度を求める
             for (int y = -sampleRadius; y <= sampleRadius; y++)
             {
                 for (int x = -sampleRadius; x <= sampleRadius; x++)
@@ -65,6 +69,7 @@ public class DepthFloorChecker : MonoBehaviour
         }
     }
 
+    // Unity画面座標(左下原点)を、Depth画像座標(左上原点)に変換している
     private Vector2 ScreenToDepthImagePoint(XRCpuImage image, Vector2 screenPoint)
     {
         float x = screenPoint.x / Screen.width * image.width;
@@ -75,6 +80,7 @@ public class DepthFloorChecker : MonoBehaviour
         return new Vector2(x, y);
     }
 
+    // Depth画像から特定のピクセルの深度をメートル単位で取得
     private bool TryGetDepthMeters(XRCpuImage image, int x, int y, out float depthMeters)
     {
         depthMeters = 0f;
@@ -86,6 +92,7 @@ public class DepthFloorChecker : MonoBehaviour
 
         XRCpuImage.Plane plane = image.GetPlane(0);
 
+        // (x, y) のDepth値が、plane.data 配列の何番目にあるかを計算
         int index = y * plane.rowStride + x * plane.pixelStride;
 
         if (index < 0 || index + 1 >= plane.data.Length)
@@ -93,6 +100,43 @@ public class DepthFloorChecker : MonoBehaviour
             return false;
         }
 
+        /*
+            Depth画像の1ピクセルは 16bit(2バイト) で保存されている。
+
+            plane.data は byte 配列なので、
+            1回で取得できるのは 8bit (=1バイト) だけ。
+
+            そのため、
+
+            index     → 下位8bit
+            index + 1 → 上位8bit
+
+            の2つを結合して、
+            1つの16bit深度値を作る必要がある。
+
+            plane.data[index + 1] << 8
+            は、上位8bitを左へ8bitずらして
+            上位バイトの位置へ移動している。
+
+            例:
+
+            下位 = 0x34
+            上位 = 0x12
+
+            0x12 << 8
+                ↓
+            0x1200
+
+            その後、| (OR演算) で結合する。
+
+            0x1200 | 0x34
+                ↓
+            0x1234
+
+            最終的に 0x1234 = 4660(mm)
+    
+            つまり約 4.66m の深度値になる。
+        */
         ushort depthMillimeters =
             (ushort)(plane.data[index] | (plane.data[index + 1] << 8));
 

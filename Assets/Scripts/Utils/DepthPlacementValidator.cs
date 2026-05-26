@@ -20,6 +20,7 @@ public class DepthPlacementValidator : MonoBehaviour
             return true;
         }
 
+        // ワールド位置をスクリーン座標に変換
         Vector3 screenPoint = arCamera.WorldToScreenPoint(worldPosition);
 
         if (screenPoint.z <= 0)
@@ -27,6 +28,7 @@ public class DepthPlacementValidator : MonoBehaviour
             return false;
         }
 
+        // Depth画像を取得
         if (!occlusionManager.TryAcquireEnvironmentDepthCpuImage(out XRCpuImage image))
         {
             Debug.LogWarning("Depth画像を取得できませんでした");
@@ -35,6 +37,7 @@ public class DepthPlacementValidator : MonoBehaviour
 
         using (image)
         {
+            // Depth画像からスクリーンポイント周辺の平均深度を取得
             if (!TryGetAverageDepth(image, screenPoint, out float realDepth))
             {
                 Debug.Log("有効なDepthサンプルが足りません");
@@ -43,6 +46,7 @@ public class DepthPlacementValidator : MonoBehaviour
 
             float objectDepth = screenPoint.z;
 
+            // 家具予定位置が、現実の表面より奥にあるかどうかをチェック
             if (objectDepth > realDepth + depthTolerance)
             {
                 Debug.Log($"Depth配置NG object={objectDepth:F2}m real={realDepth:F2}m");
@@ -54,6 +58,7 @@ public class DepthPlacementValidator : MonoBehaviour
         }
     }
 
+    // Depth画像からスクリーンポイント周辺の平均深度を取得
     private bool TryGetAverageDepth(XRCpuImage image, Vector3 screenPoint, out float averageDepth)
     {
         averageDepth = 0f;
@@ -66,6 +71,7 @@ public class DepthPlacementValidator : MonoBehaviour
         float total = 0f;
         int validCount = 0;
 
+        // 周辺Depthをサンプリングして、平均深度を求める
         for (int y = -sampleRadius; y <= sampleRadius; y++)
         {
             for (int x = -sampleRadius; x <= sampleRadius; x++)
@@ -90,6 +96,7 @@ public class DepthPlacementValidator : MonoBehaviour
         return true;
     }
 
+    // Unity画面座標(左下原点)を、Depth画像座標(左上原点)に変換している
     private Vector2 ScreenToDepthImagePoint(XRCpuImage image, Vector2 screenPoint)
     {
         float x = screenPoint.x / Screen.width * image.width;
@@ -98,6 +105,7 @@ public class DepthPlacementValidator : MonoBehaviour
         return new Vector2(x, y);
     }
 
+    // Depth画像から特定のピクセルの深度をメートル単位で取得
     private bool TryGetDepthMeters(XRCpuImage image, int x, int y, out float depthMeters)
     {
         depthMeters = 0f;
@@ -109,6 +117,7 @@ public class DepthPlacementValidator : MonoBehaviour
 
         XRCpuImage.Plane plane = image.GetPlane(0);
 
+        // (x, y) のDepth値が、plane.data 配列の何番目にあるかを計算
         int index = y * plane.rowStride + x * plane.pixelStride;
 
         if (index < 0 || index + 1 >= plane.data.Length)

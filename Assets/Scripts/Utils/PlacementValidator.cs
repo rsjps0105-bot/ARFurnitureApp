@@ -12,6 +12,7 @@ public class PlacementValidator : MonoBehaviour
         Quaternion rotation,
         Furniture ignore = null)
     {
+        // 深度検査を行う場合、まずはそれをチェックする
         if (useDepthValidation && depthPlacementValidator != null)
         {
             if (!depthPlacementValidator.CanPlaceAtWorldPosition(position))
@@ -33,6 +34,7 @@ public class PlacementValidator : MonoBehaviour
         Vector3 halfExtents =
             Vector3.Scale(box.size, prefab.transform.lossyScale) * 0.5f;
 
+        // 指定したコライダー範囲に家具が重なっていないかをチェック
         Collider[] hits = Physics.OverlapBox(center, halfExtents, rotation);
 
         foreach (Collider hit in hits)

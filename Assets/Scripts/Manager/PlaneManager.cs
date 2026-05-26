@@ -46,6 +46,8 @@ public class PlaneManager : MonoBehaviour
         ShowMessage("床を映してタップしてください");
     }
 
+    // ARPlane plane:ARCore / AR Foundation が認識した「平面」
+    // Pose hitPose:タップした位置の「位置と向き」
     public PlaneCheckResult ConfirmFloor(ARPlane plane, Pose hitPose, Vector2 screenPoint)
     {
         PlaneCheckResult result = ValidateBasicPlane(plane);
@@ -56,6 +58,7 @@ public class PlaneManager : MonoBehaviour
             return result;
         }
 
+        // 画面タップ位置の周辺が平坦かどうかをDepth情報からチェック
         if (useDepthCheck && depthFloorChecker != null)
         {
             bool depthOk = depthFloorChecker.IsFlatAroundScreenPoint(screenPoint);
@@ -67,6 +70,7 @@ public class PlaneManager : MonoBehaviour
             }
         }
 
+        // 床の高さを保存して、以降はこの高さを基準に家具配置の可否を判断する
         baseFloorY = hitPose.position.y;
         confirmedPlane = plane;
         hasBaseFloor = true;
@@ -137,7 +141,7 @@ public class PlaneManager : MonoBehaviour
             plane.gameObject.SetActive(plane == confirmedPlane);
         }
 
-        // 認定後は新しいPlane検出を止める
+        // 認定後はarPlaneManagerを無効化して新しい平面の検出を止める
         arPlaneManager.enabled = false;
     }
 
