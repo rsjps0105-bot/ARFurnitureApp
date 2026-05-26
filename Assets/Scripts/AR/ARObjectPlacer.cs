@@ -136,11 +136,15 @@ public class ARObjectPlacer : MonoBehaviour
                 continue;
 
             Vector3 placePosition = hit.pose.position;
+            placePosition.y = planeManager.PlacementFloorY;
+
             Quaternion placeRotation = Quaternion.identity;
 
-            if (!placementValidator.CanPlace(placePrefab, placePosition, placeRotation))
+            if (!placementValidator.CanPlace(
+                placePrefab,
+                placePosition,
+                placeRotation))
             {
-                messageUIManager.ShowMessage("ここには配置できません");
                 return;
             }
 
@@ -151,6 +155,7 @@ public class ARObjectPlacer : MonoBehaviour
                     placeRotation,
                     furnitureRoot
                 );
+
             messageUIManager.ShowMessage("家具を配置しました");
             return;
         }

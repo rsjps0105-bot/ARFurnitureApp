@@ -9,6 +9,7 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class ARObjectMover : MonoBehaviour
 {
+    [SerializeField] private PlaneManager planeManager;
     [SerializeField] private ARRaycastManager raycastManager;
     [SerializeField] private SelectionManager selectionManager;
     [SerializeField] private EditModeManager editModeManager;
@@ -97,11 +98,28 @@ public class ARObjectMover : MonoBehaviour
 
         if (!raycastManager.Raycast(screenPosition, hits, TrackableType.PlaneWithinPolygon))
         {
+            currentPositionValid = false;
+            selectionManager.SelectedFurniture.SetErrorOutline();
             return;
         }
 
-        Pose hitPose = hits[0].pose;
-        selected.transform.position = hitPose.position + grabOffset;
+        ARRaycastHit hit = hits[0];
+        ARPlane plane = hit.trackable as ARPlane;
+
+        PlaneCheckResult result = planeManager.CheckPlane(plane, hit.pose);
+
+        if (result != PlaneCheckResult.Ok)
+        {
+            currentPositionValid = false;
+            selectionManager.SelectedFurniture.SetErrorOutline();
+            return;
+        }
+
+        selected.transform.position = hit.pose.position + grabOffset;
+
+        Vector3 pos = selected.transform.position;
+        pos.y = planeManager.PlacementFloorY;
+        selected.transform.position = pos;
 
         bool canPlace = placementValidator.CanPlace(
             selected,
@@ -116,12 +134,15 @@ public class ARObjectMover : MonoBehaviour
             lastValidRotation = selected.transform.rotation;
             currentPositionValid = true;
 
+            selectionManager.SelectedFurniture.SetValidOutline();
+
             messageUIManager.ShowMessage("à⁄ìÆÇ≈Ç´Ç‹Ç∑");
         }
         else
         {
             currentPositionValid = false;
-            messageUIManager.ShowMessage("ëºÇÃâ∆ãÔÇ∆èdÇ»Ç¡ÇƒÇ¢Ç‹Ç∑");
+
+            selectionManager.SelectedFurniture.SetErrorOutline();
         }
     }
 
@@ -155,6 +176,7 @@ public class ARObjectMover : MonoBehaviour
             messageUIManager.ShowMessage("à⁄ìÆÇµÇ‹ÇµÇΩ");
         }
 
+        selectionManager.SelectedFurniture.SetValidOutline();
         isDragging = false;
     }
 }

@@ -98,12 +98,15 @@ public class ARObjectRotator : MonoBehaviour
             lastValidRotation = selected.transform.rotation;
             currentRotationValid = true;
 
+            selectionManager.SelectedFurniture.SetValidOutline();
+
             messageUIManager.ShowMessage("‰ñ“]‚Å‚«‚Ü‚·");
         }
         else
         {
             currentRotationValid = false;
-            messageUIManager.ShowMessage("‘¼‚Ì‰Æ‹ï‚Æd‚È‚Á‚Ä‚¢‚Ü‚·");
+
+            selectionManager.SelectedFurniture.SetErrorOutline();
         }
     }
 
@@ -137,6 +140,7 @@ public class ARObjectRotator : MonoBehaviour
             messageUIManager.ShowMessage("‰ñ“]‚µ‚Ü‚µ‚½");
         }
 
+        selectionManager.SelectedFurniture.SetValidOutline();
         isRotating = false;
     }
 }

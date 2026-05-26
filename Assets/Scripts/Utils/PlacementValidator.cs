@@ -3,9 +3,24 @@ using UnityEngine;
 public class PlacementValidator : MonoBehaviour
 {
     [SerializeField] private MessageUIManager messageUIManager;
+    [SerializeField] private DepthPlacementValidator depthPlacementValidator;
+    [SerializeField] private bool useDepthValidation = true;
 
-    public bool CanPlace(GameObject prefab, Vector3 position, Quaternion rotation, Furniture ignore = null)
+    public bool CanPlace(
+        GameObject prefab,
+        Vector3 position,
+        Quaternion rotation,
+        Furniture ignore = null)
     {
+        if (useDepthValidation && depthPlacementValidator != null)
+        {
+            if (!depthPlacementValidator.CanPlaceAtWorldPosition(position))
+            {
+                messageUIManager.ShowMessage("壁や物体に埋もれる位置には置けません");
+                return false;
+            }
+        }
+
         BoxCollider box = prefab.GetComponentInChildren<BoxCollider>();
 
         if (box == null)
@@ -15,9 +30,9 @@ public class PlacementValidator : MonoBehaviour
         }
 
         Vector3 center = position + rotation * box.center;
-        Vector3 halfExtents = Vector3.Scale(box.size, prefab.transform.lossyScale) * 0.5f;
+        Vector3 halfExtents =
+            Vector3.Scale(box.size, prefab.transform.lossyScale) * 0.5f;
 
-        // 指定した範囲内のコライダーを取得
         Collider[] hits = Physics.OverlapBox(center, halfExtents, rotation);
 
         foreach (Collider hit in hits)
@@ -26,6 +41,7 @@ public class PlacementValidator : MonoBehaviour
 
             if (furniture != null && furniture != ignore)
             {
+                messageUIManager.ShowMessage("他の家具と重なっています");
                 return false;
             }
         }

@@ -2145,54 +2145,6 @@ Transform:
   - {fileID: 1792641438}
   m_Father: {fileID: 1974879176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &453027072
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 453027074}
-  - component: {fileID: 453027073}
-  m_Layer: 0
-  m_Name: 'DepthFloorChecker '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &453027073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 453027072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30475459f47fa7841a0abc28df10fb48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DepthFloorChecker
-  occlusionManager: {fileID: 1792641444}
-  sampleRadius: 4
-  maxDepthDifference: 0.15
-  minValidSamples: 8
---- !u!4 &453027074
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 453027072}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.55225, y: 0.33715, z: 0.11817}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &480066019
 GameObject:
   m_ObjectHideFlags: 0
@@ -6164,8 +6116,6 @@ MonoBehaviour:
   messageUIManager: {fileID: 782628376}
   minPlaneSize: 0.5
   allowedHeightDifference: 0.1
-  depthFloorChecker: {fileID: 453027073}
-  useDepthCheck: 1
 --- !u!1 &1545205691
 GameObject:
   m_ObjectHideFlags: 0
@@ -6333,8 +6283,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlacementValidator
   messageUIManager: {fileID: 782628376}
-  depthPlacementValidator: {fileID: 1775312237}
-  useDepthValidation: 1
 --- !u!4 &1574836645
 Transform:
   m_ObjectHideFlags: 0
@@ -7874,57 +7822,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761975972}
   m_CullTransparentMesh: 1
---- !u!1 &1775312236
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1775312238}
-  - component: {fileID: 1775312237}
-  m_Layer: 0
-  m_Name: DepthPlacementValidator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1775312237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775312236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 533241ce9252a754bbb4e01b1d0ec523, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DepthPlacementValidator
-  arCamera: {fileID: 1792641443}
-  occlusionManager: {fileID: 1792641444}
-  defaultTolerance: 0.05
-  horizontalTolerance: 0.15
-  verticalTolerance: 0.03
-  sampleRadius: 4
-  minValidSamples: 5
---- !u!4 &1775312238
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775312236}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.55225, y: 0.33715, z: 0.11817}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1785011182
 GameObject:
   m_ObjectHideFlags: 0
@@ -8049,7 +7946,6 @@ GameObject:
   - component: {fileID: 1792641441}
   - component: {fileID: 1792641440}
   - component: {fileID: 1792641439}
-  - component: {fileID: 1792641444}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8265,23 +8161,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &1792641444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1792641437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b15f82cc229284894964d2d30806969d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.AROcclusionManager
-  m_HumanSegmentationStencilMode: 0
-  m_HumanSegmentationDepthMode: 0
-  m_EnvironmentDepthMode: 1
-  m_EnvironmentDepthTemporalSmoothing: 1
-  m_OcclusionPreferenceMode: 0
 --- !u!1 &1793934460
 GameObject:
   m_ObjectHideFlags: 0
@@ -9061,7 +8940,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7968d5fe7f773aa468d132d26c3ffece, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ARObjectMover
-  planeManager: {fileID: 1542650172}
   raycastManager: {fileID: 1974879173}
   selectionManager: {fileID: 570210391}
   editModeManager: {fileID: 2145983764}
@@ -10485,5 +10363,3 @@ SceneRoots:
   - {fileID: 559736430}
   - {fileID: 306437328}
   - {fileID: 577089869}
-  - {fileID: 453027074}
-  - {fileID: 1775312238}

@@ -158,6 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d642b9824eaf8b84bae9448a615f925f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Furniture
+  normalOutlineColor: {r: 0, g: 0.8509804, b: 1, a: 1}
+  errorOutlineColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &2074057914735590825
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public enum PlaneCheckResult
     NotHorizontal,
     TooSmall,
     DifferentHeight,
+    DepthUnstable,
     NotConfirmedFloor
 }
 
@@ -26,18 +27,26 @@ public class PlaneManager : MonoBehaviour
     [SerializeField] private float minPlaneSize = 0.5f;
     [SerializeField] private float allowedHeightDifference = 0.1f;
 
+    [Header("Depth Check")]
+    [SerializeField] private DepthFloorChecker depthFloorChecker;
+    [SerializeField] private bool useDepthCheck = true;
+
     private bool hasBaseFloor = false;
     private float baseFloorY = 0f;
     private ARPlane confirmedPlane;
 
     public bool IsFloorConfirmed => hasBaseFloor;
 
+    [Header("Placement Offset")]
+    [SerializeField] private float floorYOffset = 0.015f;
+
+    public float PlacementFloorY => baseFloorY + floorYOffset;
     private void Start()
     {
         ShowMessage("床を映してタップしてください");
     }
 
-    public PlaneCheckResult ConfirmFloor(ARPlane plane, Pose hitPose)
+    public PlaneCheckResult ConfirmFloor(ARPlane plane, Pose hitPose, Vector2 screenPoint)
     {
         PlaneCheckResult result = ValidateBasicPlane(plane);
 
@@ -45,6 +54,17 @@ public class PlaneManager : MonoBehaviour
         {
             ShowMessage(result);
             return result;
+        }
+
+        if (useDepthCheck && depthFloorChecker != null)
+        {
+            bool depthOk = depthFloorChecker.IsFlatAroundScreenPoint(screenPoint);
+
+            if (!depthOk)
+            {
+                ShowMessage("深度情報から床として不安定です");
+                return PlaneCheckResult.DepthUnstable;
+            }
         }
 
         baseFloorY = hitPose.position.y;
@@ -58,6 +78,7 @@ public class PlaneManager : MonoBehaviour
         return PlaneCheckResult.Ok;
     }
 
+    // 家具配置前のPlaneチェック
     public PlaneCheckResult CheckPlane(ARPlane plane, Pose hitPose)
     {
         if (!hasBaseFloor)
@@ -74,6 +95,12 @@ public class PlaneManager : MonoBehaviour
             return result;
         }
 
+        if (confirmedPlane == null || plane == null || plane.trackableId != confirmedPlane.trackableId)
+        {
+            ShowMessage(PlaneCheckResult.NotConfirmedFloor);
+            return PlaneCheckResult.NotConfirmedFloor;
+        }
+
         float diff = Mathf.Abs(hitPose.position.y - baseFloorY);
 
         if (diff > allowedHeightDifference)
@@ -85,6 +112,7 @@ public class PlaneManager : MonoBehaviour
         return PlaneCheckResult.Ok;
     }
 
+    // 基本的なPlaneの条件チェック
     private PlaneCheckResult ValidateBasicPlane(ARPlane plane)
     {
         if (plane == null)
@@ -126,17 +154,6 @@ public class PlaneManager : MonoBehaviour
             arSession.Reset();
     }
 
-    private void ShowAllPlanes()
-    {
-        if (arPlaneManager == null)
-            return;
-
-        foreach (ARPlane plane in arPlaneManager.trackables)
-        {
-            plane.gameObject.SetActive(true);
-        }
-    }
-
     private void ShowMessage(PlaneCheckResult result)
     {
         switch (result)
@@ -159,6 +176,10 @@ public class PlaneManager : MonoBehaviour
 
             case PlaneCheckResult.NotConfirmedFloor:
                 ShowMessage("先に床を検出してください");
+                break;
+
+            case PlaneCheckResult.DepthUnstable:
+                ShowMessage("深度情報から床として不安定です");
                 break;
         }
     }

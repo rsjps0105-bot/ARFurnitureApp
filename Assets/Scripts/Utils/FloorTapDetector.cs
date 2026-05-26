@@ -59,7 +59,12 @@ public class FloorTapDetector : MonoBehaviour
             {
                 ARPlane plane = hit.trackable as ARPlane;
 
-                PlaneCheckResult result = planeManager.ConfirmFloor(plane, hit.pose);
+                PlaneCheckResult result =
+                    planeManager.ConfirmFloor(
+                        plane,
+                        hit.pose,
+                        screenPosition
+                    );
 
                 if (result == PlaneCheckResult.Ok)
                 {

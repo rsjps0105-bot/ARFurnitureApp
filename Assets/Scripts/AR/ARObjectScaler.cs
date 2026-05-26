@@ -118,12 +118,15 @@ public class ARObjectScaler : MonoBehaviour
             lastValidScale = selected.transform.localScale;
             currentScaleValid = true;
 
+            selectionManager.SelectedFurniture.SetValidOutline();
+
             messageUIManager.ShowMessage("Šg‘åk¬‚Å‚«‚Ü‚·");
         }
         else
         {
             currentScaleValid = false;
-            messageUIManager.ShowMessage("‘¼‚Ì‰Æ‹ï‚Æd‚È‚Á‚Ä‚¢‚Ü‚·");
+
+            selectionManager.SelectedFurniture.SetErrorOutline();
         }
 
         previousDistance = currentDistance;
@@ -162,6 +165,7 @@ public class ARObjectScaler : MonoBehaviour
             messageUIManager.ShowMessage("‘å‚«‚³‚ğ•ÏX‚µ‚Ü‚µ‚½");
         }
 
+        selectionManager.SelectedFurniture.SetValidOutline();
         isScaling = false;
     }
 }
