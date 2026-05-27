@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FurnitureSelectButton
   button: {fileID: 192867629}
-  furniturePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
+  furniturePrefab: {fileID: 7249562209489796428, guid: db2beed9822716147b9aa45275fc6f1d, type: 3}
   objectPlacer: {fileID: 1960963782}
   furnitureMenuPanel: {fileID: 968202952}
 --- !u!114 &192867628
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 27554f145551eef4f9ba0b840a6230d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d6238c34af3523045b113cd29b3ad3b6, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2846,7 +2846,7 @@ GameObject:
   - component: {fileID: 574989074}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4806,7 +4806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FurnitureSelectButton
   button: {fileID: 1115407989}
-  furniturePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
+  furniturePrefab: {fileID: 6454003681213564649, guid: d41c0de5fe778504a882e1e82594b27c, type: 3}
   objectPlacer: {fileID: 1960963782}
   furnitureMenuPanel: {fileID: 968202952}
 --- !u!114 &1115407988
@@ -4893,7 +4893,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bee690058f5f59744832019160df7004, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c17dadc66eb7cc841a5999d729c0590f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -6166,6 +6166,7 @@ MonoBehaviour:
   allowedHeightDifference: 0.1
   depthFloorChecker: {fileID: 453027073}
   useDepthCheck: 1
+  floorYOffset: 0.015
 --- !u!1 &1545205691
 GameObject:
   m_ObjectHideFlags: 0
@@ -6468,7 +6469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FurnitureSelectButton
   button: {fileID: 1595219211}
-  furniturePrefab: {fileID: 8986433394891147836, guid: 75b3908475931a64bb172b25e4caf2c3, type: 3}
+  furniturePrefab: {fileID: 8960788477445467993, guid: 7cf373469de3eb8489eec755c3d0bf9b, type: 3}
   objectPlacer: {fileID: 1960963782}
   furnitureMenuPanel: {fileID: 968202952}
 --- !u!114 &1595219210
@@ -7905,9 +7906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DepthPlacementValidator
   arCamera: {fileID: 1792641443}
   occlusionManager: {fileID: 1792641444}
-  defaultTolerance: 0.05
-  horizontalTolerance: 0.15
-  verticalTolerance: 0.03
+  depthTolerance: 0.05
   sampleRadius: 4
   minValidSamples: 5
 --- !u!4 &1775312238
