@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5863333600466093325}
   - component: {fileID: 7827299945404990914}
   - component: {fileID: 8665023462169749061}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table23_model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,10 +102,9 @@ GameObject:
   - component: {fileID: 3055153236629269284}
   - component: {fileID: 3796166121256123069}
   - component: {fileID: -4235413226454436718}
-  - component: {fileID: -7038301946098364374}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Table23
-  m_TagString: Furniture
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,7 +144,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8, y: 1.5, z: 1.8}
+  m_Size: {x: 1.5, y: 1, z: 1.5}
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &3796166121256123069
 MonoBehaviour:
@@ -179,24 +178,3 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &-7038301946098364374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9195466693203670246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7b6b7b7678fa8b468c829bbca60f8bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHP: 5
-  destroyDelay: 1
-  messageUIManager: {fileID: 0}
-  onDamaged:
-    m_PersistentCalls:
-      m_Calls: []
-  onDied:
-    m_PersistentCalls:
-      m_Calls: []

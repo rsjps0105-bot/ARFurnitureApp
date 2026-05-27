@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 6605416429315629286}
   - component: {fileID: 8597392817157809220}
   - component: {fileID: 1466316034840259595}
-  - component: {fileID: 3138200201581433832}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Chair29
-  m_TagString: Furniture
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,27 +88,6 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
---- !u!114 &3138200201581433832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 31629076915561478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7b6b7b7678fa8b468c829bbca60f8bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHP: 5
-  destroyDelay: 1
-  messageUIManager: {fileID: 0}
-  onDamaged:
-    m_PersistentCalls:
-      m_Calls: []
-  onDied:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &6323456781537234539
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +99,7 @@ GameObject:
   - component: {fileID: 8644345622670758857}
   - component: {fileID: 1589777304060620343}
   - component: {fileID: 4044418377349383616}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Chair29_model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
