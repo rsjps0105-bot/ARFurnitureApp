@@ -35,6 +35,11 @@ public class PlaneManager : MonoBehaviour
     private float baseFloorY = 0f;
     private ARPlane confirmedPlane;
 
+    [Header("Plane Visual")]
+    [SerializeField] private Material detectingPlaneMaterial;
+    [SerializeField] private Material confirmedPlaneMaterial;
+    [SerializeField] private float planeVisualOffsetY = 0.03f;
+
     public bool IsFloorConfirmed => hasBaseFloor;
 
     [Header("Placement Offset")]
@@ -44,6 +49,30 @@ public class PlaneManager : MonoBehaviour
     private void Start()
     {
         ShowMessage("床を映してタップしてください");
+    }
+
+    private void LateUpdate()
+    {
+        if (arPlaneManager == null)
+            return;
+
+        foreach (ARPlane plane in arPlaneManager.trackables)
+        {
+            MeshFilter meshFilter = plane.GetComponent<MeshFilter>();
+
+            if (meshFilter == null || meshFilter.mesh == null)
+                continue;
+
+            Vector3[] vertices = meshFilter.mesh.vertices;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i].y = planeVisualOffsetY;
+            }
+
+            meshFilter.mesh.vertices = vertices;
+            meshFilter.mesh.RecalculateBounds();
+        }
     }
 
     // ARPlane plane:ARCore / AR Foundation が認識した「平面」
@@ -74,6 +103,8 @@ public class PlaneManager : MonoBehaviour
         baseFloorY = hitPose.position.y;
         confirmedPlane = plane;
         hasBaseFloor = true;
+
+        SetPlaneMaterial(confirmedPlane, confirmedPlaneMaterial);
 
         ShowOnlyConfirmedPlane();
 
@@ -152,10 +183,31 @@ public class PlaneManager : MonoBehaviour
         confirmedPlane = null;
 
         if (arPlaneManager != null)
+        {
+            foreach (ARPlane plane in arPlaneManager.trackables)
+            {
+                SetPlaneMaterial(plane, detectingPlaneMaterial);
+            }
+        }
+
+        if (arPlaneManager != null)
             arPlaneManager.enabled = true;
 
         if (arSession != null)
             arSession.Reset();
+    }
+
+    private void SetPlaneMaterial(ARPlane plane, Material material)
+    {
+        if (plane == null || material == null)
+            return;
+
+        MeshRenderer renderer = plane.GetComponent<MeshRenderer>();
+
+        if (renderer != null)
+        {
+            renderer.material = material;
+        }
     }
 
     private void ShowMessage(PlaneCheckResult result)

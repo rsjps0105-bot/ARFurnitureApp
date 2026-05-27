@@ -6166,7 +6166,10 @@ MonoBehaviour:
   allowedHeightDifference: 0.1
   depthFloorChecker: {fileID: 453027073}
   useDepthCheck: 1
-  floorYOffset: 0.015
+  detectingPlaneMaterial: {fileID: 2100000, guid: 6db7fc0c95dd60b4bb79d7a4b84c729d, type: 2}
+  confirmedPlaneMaterial: {fileID: 2100000, guid: 9b231f4df0e3fdc49a51a64bfea59963, type: 2}
+  planeVisualOffsetY: 0.03
+  floorYOffset: 0.02
 --- !u!1 &1545205691
 GameObject:
   m_ObjectHideFlags: 0
