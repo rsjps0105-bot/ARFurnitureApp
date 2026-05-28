@@ -2,54 +2,46 @@ using UnityEngine;
 
 public class Furniture : MonoBehaviour
 {
-    private Outline outline;
-
     [SerializeField] private Color normalOutlineColor = new Color32(0, 217, 255, 255);
     [SerializeField] private Color errorOutlineColor = Color.red;
 
+    private Outline[] outlines;
+
     private void Awake()
     {
-        outline = GetComponent<Outline>();
+        outlines = GetComponentsInChildren<Outline>(true);
 
-        if (outline != null)
-        {
-            outline.enabled = false;
-            outline.OutlineColor = normalOutlineColor;
-        }
+        SetOutline(false, normalOutlineColor);
     }
 
     public void Select()
     {
-        if (outline != null)
-        {
-            outline.enabled = true;
-            outline.OutlineColor = normalOutlineColor;
-        }
+        SetOutline(true, normalOutlineColor);
     }
 
     public void Deselect()
     {
-        if (outline != null)
-        {
-            outline.enabled = false;
-        }
+        SetOutline(false, normalOutlineColor);
     }
 
     public void SetValidOutline()
     {
-        if (outline != null)
-        {
-            outline.enabled = true;
-            outline.OutlineColor = normalOutlineColor;
-        }
+        SetOutline(true, normalOutlineColor);
     }
 
     public void SetErrorOutline()
     {
-        if (outline != null)
+        SetOutline(true, errorOutlineColor);
+    }
+
+    private void SetOutline(bool enabled, Color color)
+    {
+        foreach (Outline outline in outlines)
         {
-            outline.enabled = true;
-            outline.OutlineColor = errorOutlineColor;
+            if (outline == null) continue;
+
+            outline.enabled = enabled;
+            outline.OutlineColor = color;
         }
     }
 }

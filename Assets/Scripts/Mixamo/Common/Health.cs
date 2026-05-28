@@ -40,7 +40,7 @@ public class Health : MonoBehaviour
         if (messageUIManager != null)
         {
             messageUIManager.ShowMessage(
-                $"{name} が {damage} ダメージを受けた");
+                $"家具が {damage} ダメージを受けた！");
         }
 
         CurrentHP -= damage;

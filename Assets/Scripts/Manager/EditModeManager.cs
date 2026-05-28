@@ -56,8 +56,6 @@ public class EditModeManager : MonoBehaviour
         {
             modeText.text = "Mode : " + mode.ToString();
         }
-
-        Debug.Log("Mode : " + mode);
     }
 
     public void DeleteSelected()

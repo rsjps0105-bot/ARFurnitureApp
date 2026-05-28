@@ -30,7 +30,12 @@ public class PlacementValidator : MonoBehaviour
             return true;
         }
 
-        Vector3 center = position + rotation * box.center;
+        Vector3 scaledCenter =
+            Vector3.Scale(box.center, prefab.transform.lossyScale);
+
+        Vector3 center =
+            position + rotation * scaledCenter;
+
         Vector3 halfExtents =
             Vector3.Scale(box.size, prefab.transform.lossyScale) * 0.5f;
 

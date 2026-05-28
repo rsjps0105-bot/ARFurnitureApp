@@ -58,15 +58,15 @@ public class ARObjectPlacer : MonoBehaviour
             return;
         }
 
-        if (selectionManager != null && selectionManager.HasSelection)
-        {
-            messageUIManager.ShowMessage("選択中のため配置しない");
-            return;
-        }
-
         if (IsTouchingFurniture(touch.screenPosition))
         {
             messageUIManager.ShowMessage("家具を選択中");
+            return;
+        }
+
+        if (selectionManager != null && selectionManager.HasSelection)
+        {
+            messageUIManager.ShowMessage("選択中のため配置しない");
             return;
         }
 

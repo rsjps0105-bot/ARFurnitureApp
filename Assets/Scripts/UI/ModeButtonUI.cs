@@ -28,6 +28,11 @@ public class ModeButtonUI : MonoBehaviour
         scaleButtonImage.color = selectedColor;
     }
 
+    public void Clear()
+    {
+        ResetColors();
+    }
+
     private void ResetColors()
     {
         moveButtonImage.color = normalColor;
